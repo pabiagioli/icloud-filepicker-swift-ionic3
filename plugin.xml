@@ -1,0 +1,20 @@
+<?xml version='1.0' encoding='utf-8'?>
+<plugin id="org-pampanet-plugins-documentpickerswift" version="0.0.1" xmlns="http://apache.org/cordova/ns/plugins/1.0" xmlns:android="http://schemas.android.com/apk/res/android">
+    <name>DocumentPickerSwift</name>
+    <js-module name="DocumentPickerSwift" src="www/DocumentPickerSwift.js">
+        <clobbers target="DocumentPickerSwift" />
+    </js-module>
+    <platform name="ios">
+    <config-file target="config.xml" parent="/*">
+        <feature name="DocumentPickerSwift">
+        <param name="ios-package" value="DocumentPickerSwift" />
+        </feature>
+    </config-file>
+    <header-file src="src/ios/DocumentPickerSwift-Bridging-Header.h"/>
+    <source-file src="src/ios/DocumentPickerSwift.swift" />
+
+    <hook type="after_plugin_install" src="src/ios/hooks/prerequisites.js"/>
+    <hook type="after_plugin_install" src="src/ios/hooks/install_entitlements.js"/>
+    <hook type="after_plugin_install" src="src/ios/hooks/add_swift_support.js"/>
+    </platform>
+</plugin>
