@@ -20,7 +20,7 @@ import Foundation
     @objc(isAvailable:)func isAvailable(command: CDVInvokedUrlCommand) {
         print("isAvailable - begin")
         let supported: Bool = isSupported()
-        commandDelegate.sendPluginResult(CDVPluginResult(status: CDVCommandStatus_OK, messageAsBool: supported), callbackId: command.callbackId)
+        commandDelegate.send(CDVPluginResult(status: CDVCommandStatus_OK, messageAs: supported), callbackId: command.callbackId)
         print("isAvailable - end")
     }
     
@@ -39,7 +39,7 @@ import Foundation
             }else {
                 supported = false
                 UTIsArray = ["not supported"]
-                commandDelegate.sendPluginResult(CDVPluginResult(status: CDVCommandStatus_ERROR, messageAsString: UTIsArray[0]), callbackId: self.command?.callbackId)
+                commandDelegate.send(CDVPluginResult(status: CDVCommandStatus_ERROR, messageAs: UTIsArray[0]), callbackId: self.command?.callbackId)
             }
         }else{
             UTIsArray = ["public.data"]
@@ -47,12 +47,11 @@ import Foundation
         
         if !isSupported() {
             supported = false
-            commandDelegate.sendPluginResult(CDVPluginResult(status: CDVCommandStatus_ERROR, messageAsString: "your device can't show the file picker"), callbackId: self.command?.callbackId)
+            commandDelegate.send(CDVPluginResult(status: CDVCommandStatus_ERROR, messageAs: "your device can't show the file picker"), callbackId: self.command?.callbackId)
         }
         if supported {
             pluginResult = CDVPluginResult(status: CDVCommandStatus_NO_RESULT)
             pluginResult?.keepCallback = true
-            
             displayDocumentPicker(UTIsArray)
         }
         print("pickFile - end")
@@ -60,35 +59,34 @@ import Foundation
     
     // MARK: - UIDocumentMenuDelegate
     
-    func documentMenu(documentMenu: UIDocumentMenuViewController, didPickDocumentPicker documentPicker: UIDocumentPickerViewController) {
+    func documentMenu(_ documentMenu: UIDocumentMenuViewController, didPickDocumentPicker documentPicker: UIDocumentPickerViewController) {
         documentPicker.delegate = self
-        documentPicker.modalPresentationStyle = .FullScreen
-        viewController.presentViewController(documentPicker, animated: true, completion: { _ in })
+        documentPicker.modalPresentationStyle = .fullScreen
+        viewController.present(documentPicker, animated: true, completion: { _ in })
     }
     
-    func documentMenuWasCancelled(documentMenu: UIDocumentMenuViewController) {
-        pluginResult = CDVPluginResult(status: CDVCommandStatus_ERROR, messageAsString: "canceled")
+    func documentMenuWasCancelled(_ documentMenu: UIDocumentMenuViewController) {
+        pluginResult = CDVPluginResult(status: CDVCommandStatus_ERROR, messageAs: "canceled")
         pluginResult?.keepCallback = false
-        commandDelegate.sendPluginResult(pluginResult, callbackId: command?.callbackId)
+        commandDelegate.send(pluginResult, callbackId: command?.callbackId)
     }
     // MARK: - UIDocumentPickerDelegate
-    //documentPicker(controller: UIDocumentPickerViewController, didPickDocumentAtURL url: NSURL)
-    func documentPicker(controller: UIDocumentPickerViewController, didPickDocumentAtURL url: NSURL) {
-        pluginResult = CDVPluginResult(status: CDVCommandStatus_OK, messageAsString: url.path)
+    func documentPicker(_ controller: UIDocumentPickerViewController, didPickDocumentAt url: URL) {
+        pluginResult = CDVPluginResult(status: CDVCommandStatus_OK, messageAs: url.path)
         pluginResult?.keepCallback = false
-        commandDelegate.sendPluginResult(pluginResult, callbackId: command?.callbackId)
+        commandDelegate.send(pluginResult, callbackId: command?.callbackId)
     }
     
-    func documentPickerWasCancelled(controller: UIDocumentPickerViewController) {
-        pluginResult = CDVPluginResult(status: CDVCommandStatus_ERROR, messageAsString: "canceled")
+    func documentPickerWasCancelled(_ controller: UIDocumentPickerViewController) {
+        pluginResult = CDVPluginResult(status: CDVCommandStatus_ERROR, messageAs: "canceled")
         pluginResult?.keepCallback = false
-        commandDelegate.sendPluginResult(pluginResult, callbackId: command?.callbackId)
+        commandDelegate.send(pluginResult, callbackId: command?.callbackId)
     }
     
-    func displayDocumentPicker(UTIs: [String]) {
-        let importMenu = UIDocumentMenuViewController(documentTypes: UTIs, inMode: .Import)
+    func displayDocumentPicker(_ UTIs: [String]) {
+        let importMenu = UIDocumentMenuViewController(documentTypes: UTIs, in: .import)
         importMenu.delegate = self
         importMenu.popoverPresentationController?.sourceView = viewController.view
-        viewController.presentViewController(importMenu, animated: true, completion: { _ in })
+        viewController.present(importMenu, animated: true, completion: { _ in })
     }
 }
