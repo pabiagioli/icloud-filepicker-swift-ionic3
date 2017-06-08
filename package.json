@@ -1,0 +1,31 @@
+{
+  "name": "DocumentPickerSwift",
+  "version": "0.0.2",
+  "description": "iCloud File Picker plugin for Ionic 3 made with Swift 3",
+  "types": "./types/index.d.ts",
+  "cordova": {
+    "id": "org-pampanet-plugins-documentpickerswift",
+    "platforms": [
+      "ios"
+    ]
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/pabiagioli/icloud-filepicker-swift-ionic3"
+  },
+  "keywords": [
+    "cordova",
+    "device",
+    "ecosystem:cordova",
+    "cordova-ios",
+    "document-picker",
+    "swift"
+  ],
+  "author": "Pablo Biagioli",
+  "license": "GPL-v3",
+  "engines": {
+    "cordovaDependencies": {
+        "0.0.2": { "cordova-ios": "4.4.0"}
+    }
+  }
+}
