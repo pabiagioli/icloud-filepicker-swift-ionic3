@@ -23,7 +23,7 @@ import Foundation
         commandDelegate.send(CDVPluginResult(status: CDVCommandStatus_OK, messageAs: supported), callbackId: command.callbackId)
         print("isAvailable - end")
     }
-    
+    @available(iOS 8.0, *)
     @objc(pickFile:)func pickFile(command: CDVInvokedUrlCommand) {
         print("pickFile - begin")
         self.command = command
@@ -58,31 +58,32 @@ import Foundation
     }
     
     // MARK: - UIDocumentMenuDelegate
-    
+    @available(iOS 8.0, *)
     func documentMenu(_ documentMenu: UIDocumentMenuViewController, didPickDocumentPicker documentPicker: UIDocumentPickerViewController) {
         documentPicker.delegate = self
         documentPicker.modalPresentationStyle = .fullScreen
         viewController.present(documentPicker, animated: true, completion: { _ in })
     }
-    
+    @available(iOS 8.0, *)
     func documentMenuWasCancelled(_ documentMenu: UIDocumentMenuViewController) {
         pluginResult = CDVPluginResult(status: CDVCommandStatus_ERROR, messageAs: "canceled")
         pluginResult?.keepCallback = false
         commandDelegate.send(pluginResult, callbackId: command?.callbackId)
     }
     // MARK: - UIDocumentPickerDelegate
+    @available(iOS 8.0, *)
     func documentPicker(_ controller: UIDocumentPickerViewController, didPickDocumentAt url: URL) {
         pluginResult = CDVPluginResult(status: CDVCommandStatus_OK, messageAs: url.path)
         pluginResult?.keepCallback = false
         commandDelegate.send(pluginResult, callbackId: command?.callbackId)
     }
-    
+    @available(iOS 8.0, *)
     func documentPickerWasCancelled(_ controller: UIDocumentPickerViewController) {
         pluginResult = CDVPluginResult(status: CDVCommandStatus_ERROR, messageAs: "canceled")
         pluginResult?.keepCallback = false
         commandDelegate.send(pluginResult, callbackId: command?.callbackId)
     }
-    
+    @available(iOS 8.0, *)
     func displayDocumentPicker(_ UTIs: [String]) {
         let importMenu = UIDocumentMenuViewController(documentTypes: UTIs, in: .import)
         importMenu.delegate = self
